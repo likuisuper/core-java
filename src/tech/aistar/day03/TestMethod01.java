@@ -8,7 +8,7 @@ package tech.aistar.day03;
  */
 public class TestMethod01 {
 
-    //程序的唯一的入口
+
     public static void main(String[] args) {
         //如何调用自定义的方法 - 关心方法调用的方式
 
