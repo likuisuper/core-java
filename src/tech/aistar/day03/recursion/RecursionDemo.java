@@ -7,6 +7,11 @@ package tech.aistar.day03.recursion;
  * @date 2020/7/20 10:53
  */
 public class RecursionDemo {
+    /**
+     * 斐波那契数
+     * @param n:位置
+     * @return 值
+     */
     public static int fei(int n){
         //1.指明递归的出口
         if(n==1||n==2)
