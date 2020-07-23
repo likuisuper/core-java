@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class ArraysUtil {
 
     public static void main(String[] args) {
-        int[] arr={5,4,5,7,2,1,5};
+        int[] arr={5,5,5,7,2,1,5};
 
         /*
         int[] temp=getIndexByTarget(arr,5);
@@ -24,30 +24,29 @@ public class ArraysUtil {
          */
 
         //-------------------------------------
-        /*
         int[] temp=delByIndex(arr,4);
         System.out.println(Arrays.toString(temp));
         System.out.println(Arrays.toString(arr));
 
-         */
 
         //----------------------------------
         //System.out.println(Arrays.toString(delByTarget(arr,5)));
 
         //----------------------------
-        /*
-        int[] temp=delByPos(arr,2);
+/*        int[] temp=delByPos(arr,2);
         System.out.println(Arrays.toString(temp));
+        System.out.println(Arrays.toString(arr));*/
 
-         */
 
         //------------------------
         //System.out.println(Arrays.toString(delDoubleElement01(arr)));
 
-        //System.out.println(Arrays.toString(delDoubleElement02(arr)));
+//        System.out.println(Arrays.toString(delDoubleElement02(arr)));
+//        System.out.println(Arrays.toString(arr));
 
         //-------------------
-        System.out.println(Arrays.toString(insertOneElement(arr,3,8)));
+        //System.out.println(Arrays.toString(insertOneElement(arr,3,8)));
+
 
      }
 
@@ -144,8 +143,14 @@ public class ArraysUtil {
                 temp[pos++]=arr[i];
         }
 
-        //arr=temp;
         return temp;
+
+        //下面for循环之后，main方法中的arr值改变
+/*        for (int i = 0; i < arr.length-1; i++) {
+            arr[i]=temp[i];
+        }
+        return arr;*/
+
     }
 
     /**
@@ -312,12 +317,13 @@ public class ArraysUtil {
             for(int j=i+1;j<arr.length;j++){
                 if(arr[i]==arr[j]){
                     arr=delByPos(arr,j);
+                    j--;
                 }
             }
-            temp[pos++]=arr[i];
+            //temp[pos++]=arr[i];
         }
-        temp=Arrays.copyOf(temp,pos);
-        return temp;
+        //temp=Arrays.copyOf(temp,pos);
+        return arr;
 
     }
 
@@ -351,4 +357,5 @@ public class ArraysUtil {
     public static int[] insertOneElement02(int[] arr,int pos,int... target){
         return null;
     }
+
 }

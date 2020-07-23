@@ -19,15 +19,11 @@ public class Triangle {
 
     public static void print(int n) {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= i; j++) {
-                if (j == 0 || i == j) {
-                    System.out.print(1 + "\t");
-                } else {
-                    System.out.print(yangHui(i, j) + "\t");
-                }
-                if(i==j)
-                    System.out.println();
+            for (int j = 0; j <=i ; j++) {
+                // System.out.print("*\t");
+                System.out.print(yangHui(i,j)+"\t");
             }
+            System.out.println();
         }
     }
 
