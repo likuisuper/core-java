@@ -12,6 +12,7 @@ public class ArraySortDemo {
     public static void main(String[] args) {
         int[] arr={3,4,24,34,2,6,40};
         ArraySortDemo a=new ArraySortDemo();
+
         //System.out.println(Arrays.toString(a.selectSort(arr)));
         System.out.println(Arrays.toString(a.bubbleSort(arr)));
         //System.out.println(Arrays.toString(a.quickSort(arr,0,7)));

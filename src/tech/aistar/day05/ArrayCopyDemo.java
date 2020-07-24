@@ -16,6 +16,8 @@ public class ArrayCopyDemo {
 
         System.out.println(Arrays.toString(temp));
 
+        System.out.println(Arrays.toString(copy02(arr,3)));
+
     }
 
     /**
@@ -41,6 +43,11 @@ public class ArrayCopyDemo {
         //该方法底层肯定是直接操作了temp
         System.arraycopy(arr,0,temp,0,arr.length);
 
+        return temp;
+    }
+
+    public static int[] copy02(int[] arr,int len){
+        int[] temp=Arrays.copyOf(arr,len);
         return temp;
     }
 }
