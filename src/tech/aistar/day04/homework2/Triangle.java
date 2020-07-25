@@ -14,7 +14,10 @@ package tech.aistar.day04.homework2;
  */
 public class Triangle {
     public static void main(String[] args) {
-        print(5);
+
+        //print(5);
+
+        System.out.println(factorial(2));
     }
 
     public static void print(int n) {
@@ -31,5 +34,11 @@ public class Triangle {
         if (x == y || y == 0)
             return 1;
         return yangHui(x - 1, y - 1) + yangHui(x - 1, y);
+    }
+
+    public static long factorial(int n){
+        if(n==1)
+            return 1;
+        return n*factorial(n-1);
     }
 }
