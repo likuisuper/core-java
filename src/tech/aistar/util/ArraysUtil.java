@@ -360,6 +360,24 @@ public class ArraysUtil {
                 }
             }
         }
+
+        //定义一个计数器 - 新数组的长度
+        int count = 0;
+        for (int i = 0; i < flags.length; i++) {
+            if(flags[i])
+                count++;
+        }
+
+        int[] temp = new int[count];
+
+        int pos = 0;//下标计数器
+
+        for (int i = 0; i < arr.length; i++) {
+            if(flags[i]){
+                temp[pos++] = arr[i];
+            }
+        }
+        return temp;
     }
 
     /**
@@ -370,7 +388,21 @@ public class ArraysUtil {
      * @return
      */
     public static int[] insertOneElement(int[] arr,int pos,int target){
-        return null;
+        //参数有效性判断....
+
+        //1. 定义一个新的目标数组
+        int[] temp = new int[arr.length+1];
+
+        // {1,2,34,4,5};
+
+        //2. pos之前
+        System.arraycopy(arr,0,temp,0,pos);
+        //3. pos处
+        temp[pos] = target;
+        //4. pos之后
+        System.arraycopy(arr,pos,temp,pos+1,arr.length-pos);
+
+        return temp;
     }
 
     /**
