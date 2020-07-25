@@ -9,5 +9,6 @@ package tech.aistar.util;
 public class Test {
     public static void main(String[] args) {
         System.out.println(aaa);
+        System.out.println("你好");
     }
 }
