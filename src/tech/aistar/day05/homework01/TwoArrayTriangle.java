@@ -10,7 +10,15 @@ import java.util.Arrays;
  */
 public class TwoArrayTriangle {
     public static void main(String[] args) {
-        print(5);
+        //print(5);
+
+        int[][] temp=print01(5);
+        for (int i = 0; i < temp.length; i++) {
+            for (int j = 0; j < temp[i].length; j++) {
+                System.out.print(temp[i][j]+"\t");
+            }
+            System.out.println();
+        }
     }
 
     public static void print(int n){
@@ -28,6 +36,21 @@ public class TwoArrayTriangle {
             //一行结束之后换行
             System.out.println();
         }
+
     }
 
+    public static int[][] print01(int n){
+        int[][] arr=new int[n][];//列可以省略不写，但是在使用之前一定要初始化
+
+        for (int i = 0; i < arr.length; i++) {
+            arr[i]=new int[i+1];
+            for (int j = 0; j <=i; j++) {
+                if(j==0||i==j||i==0)
+                    arr[i][j]=1;
+                else
+                    arr[i][j]=arr[i-1][j-1]+arr[i-1][j];
+            }
+        }
+        return arr;
+    }
 }

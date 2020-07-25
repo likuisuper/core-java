@@ -307,22 +307,28 @@ public class ArraysUtil {
     public static int[] delDoubleElement02(int[] arr){
         if(null==arr||arr.length==0)
             return null;
-        //1.定义一个数组
-        int[] temp=new int[arr.length];
 
-        //定义一个下标计数器
-        int pos=0;
-
+        //1 2 2 2 5 6 7
+        //1 2 2 5 6 7
         for(int i=0;i< arr.length;i++){
             for(int j=i+1;j<arr.length;j++){
                 if(arr[i]==arr[j]){
                     arr=delByPos(arr,j);
+                    //j--是防止出现两个重复元素在一起的时候漏删
                     j--;
                 }
             }
-            //temp[pos++]=arr[i];
         }
-        //temp=Arrays.copyOf(temp,pos);
+
+        //也可以从后往前删，避免漏掉
+//        for (int i = 0; i < arr.length; i++) {
+//            for (int j = arr.length; j >=i+1 ; j--) {
+//                if(arr[i]==arr[j]){
+//                    arr=delByIndex(arr,j);
+//                }
+//            }
+//        }
+
         return arr;
 
     }
@@ -333,7 +339,27 @@ public class ArraysUtil {
      * @return
      */
     public static int[] delDoubleElement03(int[] arr){
-        return null;
+        if(null==arr||arr.length==0)
+            return null;
+
+        //1.定义一个布尔类型的数组
+        boolean[] flags=new boolean[arr.length];
+
+        //2.全部设置成true
+//        for (int i = 0; i < flags.length; i++) {
+//            flags[i]=true;
+//        }
+
+        Arrays.fill(flags,true);//统一进行赋值
+
+        //把原数组中重复出现的元素的设置成false
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = i+1; j < arr.length; j++) {
+                if(arr[i]==arr[j]){
+                    flags[j]=false;
+                }
+            }
+        }
     }
 
     /**
