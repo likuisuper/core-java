@@ -11,6 +11,7 @@ public class ForTwoDemo {
         //square(5);
         //triangle2(8);
         //hollowDiamond();
+        nine(9);
         solidDiamond();
     }
 
