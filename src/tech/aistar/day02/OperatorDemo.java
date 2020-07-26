@@ -1,7 +1,7 @@
 package tech.aistar.day02;
 
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
+
 
 /**
  * @Author 箜絔lk
@@ -103,7 +103,7 @@ public class OperatorDemo {
 
         //按位与 - 非短路与
         int b2=1;
-        System.out.println(false&&(b2++)>0);
+        System.out.println(false&(b2++)>0);
         System.out.println("b2:"+b2);//2
 
         System.out.println(10 & 8);//8
