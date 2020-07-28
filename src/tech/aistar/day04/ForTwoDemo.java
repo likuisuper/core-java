@@ -9,7 +9,7 @@ package tech.aistar.day04;
 public class ForTwoDemo {
     public static void main(String[] args) {
         //square(5);
-        //triangle2(8);
+        triangle2(8);
         //hollowDiamond();
         nine(9);
         solidDiamond();
@@ -56,7 +56,7 @@ public class ForTwoDemo {
      */
     public static void triangle2(int n) {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j <= n; j++) {
+            for (int j = 0; j < n; j++) {
                 if (j == 0 || i == j || i == n - 1) {
                     System.out.print("*");
                 } else {
