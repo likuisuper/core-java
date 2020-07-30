@@ -9,11 +9,11 @@
 *.rar
 
 #maven ignore
-target/
-build/
+#target/
+#build/
 
 
-#Intellij idea
+#idea
 .idea/
 /idea/
 *.ipr
