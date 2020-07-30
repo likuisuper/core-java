@@ -64,6 +64,9 @@ public class StaticDemo {
 //        System.out.println(sid);
 //        test01();
         StaticDemo staticDemo=new StaticDemo();
+
+        /* 无论创建多少次对象,静态代码块中的程序仍然只会执行一次 */
+        StaticDemo staticDemo1=new StaticDemo();
         staticDemo.test();
 
     }
