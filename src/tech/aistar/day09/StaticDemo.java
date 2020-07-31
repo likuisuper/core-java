@@ -23,6 +23,9 @@ public class StaticDemo {
     //定义一个静态变量
     private static int sid=100;
 
+    //测试外部类通过该类实例来调用静态方法
+    public static int out=555;
+
     //非静态属性
     private int id=100;
 
@@ -69,5 +72,15 @@ public class StaticDemo {
         StaticDemo staticDemo1=new StaticDemo();
         staticDemo.test();
 
+    }
+}
+
+class Test{
+    public static void main(String[] args) {
+        StaticDemo s=new StaticDemo();
+        System.out.println("通过实例调用静态变量:"+s.out);
+
+        System.out.println("通过实例调用静态方法:");
+        s.test01();
     }
 }
