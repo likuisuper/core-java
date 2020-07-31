@@ -3,6 +3,8 @@ package tech.aistar.day09.inner;
 /**
  * 本类功能:外部类
  *
+ * 内部类可以直接访问外部类中定义的成员
+ *
  * @author cxylk
  * @date 2020/7/30 20:19
  */
