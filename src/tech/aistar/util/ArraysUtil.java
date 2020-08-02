@@ -3,7 +3,7 @@ package tech.aistar.util;
 import java.util.Arrays;
 
 /**
- * 本类功能:
+ * 本类功能:数组工具类
  *
  * @author cxylk
  * @date 2020/7/22 14:23
@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class ArraysUtil {
 
     public static void main(String[] args) {
-        int[] arr={5,5,5,7,2,1,5};
+        int[] arr = {5, 5, 5, 7, 2, 1, 5, 7};
 
         /*
         int[] temp=getIndexByTarget(arr,5);
@@ -24,9 +24,9 @@ public class ArraysUtil {
          */
 
         //-------------------------------------
-        int[] temp=delByIndex(arr,4);
-        System.out.println(Arrays.toString(temp));
-        System.out.println(Arrays.toString(arr));
+//        int[] temp=delByIndex(arr,4);
+//        System.out.println(Arrays.toString(temp));
+//        System.out.println(Arrays.toString(arr));
 
 
         //----------------------------------
@@ -41,29 +41,30 @@ public class ArraysUtil {
         //------------------------
         //System.out.println(Arrays.toString(delDoubleElement01(arr)));
 
-//        System.out.println(Arrays.toString(delDoubleElement02(arr)));
-//        System.out.println(Arrays.toString(arr));
+        System.out.println(Arrays.toString(delDoubleElement02(arr)));
+        //System.out.println(Arrays.toString(arr));
 
         //-------------------
         //System.out.println(Arrays.toString(insertOneElement(arr,3,8)));
 
 
-     }
+    }
 
     /**
      * 找出数组中最大的值
+     *
      * @param arr
      * @return
      */
-    public static int getMaxElement(int[] arr){
-        if(null==arr||arr.length==0)
+    public static int getMaxElement(int[] arr) {
+        if (null == arr || arr.length == 0)
             return -1;//返回错误的标记即可
         //定义一个变量，用来保存最大值
-        int max=arr[0];//假设数组第一个元素是最大的
+        int max = arr[0];//假设数组第一个元素是最大的
         //遍历数组
-        for (int i = 1; i <arr.length ; i++) {
-            if(max<arr[i]){
-                max=arr[i];
+        for (int i = 1; i < arr.length; i++) {
+            if (max < arr[i]) {
+                max = arr[i];
             }
         }
         return max;
@@ -71,76 +72,77 @@ public class ArraysUtil {
 
     /**
      * 找出数组中target元素对应的所有的下标
+     *
      * @param arr
      * @param target 元素
      * @return
      */
-    public static int[] getIndexByTarget(int[] arr,int target){
-        if(null==arr||arr.length==0)
+    public static int[] getIndexByTarget(int[] arr, int target) {
+        if (null == arr || arr.length == 0)
             return new int[0];
         //1.定义一个变量代表target出现的次数
-        int count=0;
+        int count = 0;
 
         //2.遍历原数组，计算count出现的次数
         for (int i = 0; i < arr.length; i++) {
-            if(arr[i]==target)
+            if (arr[i] == target)
                 count++;
         }
 
         //count可能为0,即target没有出现
-        if(count==0)
+        if (count == 0)
             return new int[0];
 
         //程序走到这一步，代表target肯定出现了
 
         //3.定义一个临时数组，来存储下标值，它的长度就是target出现的次数
-        int[] temp=new int[count];
+        int[] temp = new int[count];
 
         //定义一个下标计数器，代表temp数组的下标
-        int pos=0;
+        int pos = 0;
 
         //4.遍历原数组，把下标存到临时数组中
         for (int i = 0; i < arr.length; i++) {
-            if(arr[i]==target)
-                temp[pos++]=i;//先用pos的值，再让它加1
+            if (arr[i] == target)
+                temp[pos++] = i;//先用pos的值，再让它加1
         }
         return temp;
     }
 
     /**
      * 根据下标删除数组中的元素
-     *
+     * <p>
      * 思路:int[] arr = {5,4,5,7,2,1,5};
-     *      int[] temp = new int[arr.length-1];//下标是唯一的
-     *
-     *      1. 遍历arr -> i!=index -> arr[i]放入到新的temp中.
-     *
-     *      2. 如果是index位置的值,不把它放入到temp中
-     *
-     *      3. 返回temp数组 - 给我们的感觉好像是进行删除操作.
-     *
+     * int[] temp = new int[arr.length-1];//下标是唯一的
+     * <p>
+     * 1. 遍历arr -> i!=index -> arr[i]放入到新的temp中.
+     * <p>
+     * 2. 如果是index位置的值,不把它放入到temp中
+     * <p>
+     * 3. 返回temp数组 - 给我们的感觉好像是进行删除操作.
+     * <p>
      * main: arr --->[5,4,5,7,2,1,5] <------方法中的arr(main方法中arr的副本)
+     * <p>
+     * temp----->[5,4,5,7,1,5],让方法中的arr=temp，main方法中arr的值仍然不变
      *
-     *  temp----->[5,4,5,7,1,5],让方法中的arr=temp，main方法中arr的值仍然不变
-     *
-     * @param arr 数组
+     * @param arr   数组
      * @param index 下标是唯一的
      * @return
      */
-    public static int[] delByIndex(int[] arr,int index){
-        if(null==arr||arr.length==0)
+    public static int[] delByIndex(int[] arr, int index) {
+        if (null == arr || arr.length == 0)
             return null;
         //1.定义一个临时数组，并确定该数组的长度
         //因为是删除操作，所以数组长度比原数组长度小
-        int[] temp=new int[arr.length-1];
+        int[] temp = new int[arr.length - 1];
 
         //定义一个下标计数器pos
-        int pos=0;
+        int pos = 0;
 
         //2.遍历数组
         for (int i = 0; i < arr.length; i++) {
-            if(i!=index)
-                temp[pos++]=arr[i];
+            if (i != index)
+                temp[pos++] = arr[i];
         }
 
         return temp;
@@ -155,49 +157,50 @@ public class ArraysUtil {
 
     /**
      * 根据元素进行删除
-     *
+     * <p>
      * 思路：
-     *
+     * <p>
      * 1.先确定target出现的次数
-     *
+     * <p>
      * 2.定义一个数组，并确定它的长度
-     *
+     * <p>
      * 3.遍历arr
-     *
+     * <p>
      * 4.return temp
-     *
+     * <p>
      * 删除数组中所有的target元素
+     *
      * @param arr
      * @param target
      * @return
      */
-    public static int[] delByTarget(int[] arr,int target){
-        if(null==arr||arr.length==0)
+    public static int[] delByTarget(int[] arr, int target) {
+        if (null == arr || arr.length == 0)
             return new int[0];
         //1.确定target是否存在
-        int count=0;
+        int count = 0;
 
         //2.遍历
-        for (int i = 0; i <arr.length ; i++) {
-            if(arr[i]==target)
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == target)
                 count++;
         }
 
-        if(count==0)
+        if (count == 0)
             return new int[0];
 
         //3.target肯定存在
         //确定新的数组的长度 - 新的数组就是不包含target元素
         //长度就是原来数组长度-target元素出现的次数
-        int[] temp=new int[arr.length-count];
+        int[] temp = new int[arr.length - count];
 
         //定义下标计数器
-        int pos=0;
+        int pos = 0;
 
         //4.遍历原来数组
-        for (int i = 0; i <arr.length ; i++) {
-            if(arr[i]!=target)
-                temp[pos++]=arr[i];
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != target)
+                temp[pos++] = arr[i];
         }
         return temp;
 
@@ -205,61 +208,61 @@ public class ArraysUtil {
 
     /**
      * 操作数组的原则 - 尽量不要对原来的数组进行直接的操作.
-     *
+     * <p>
      * 根据下标进行删除操作
-     *  {5,4,5,7,2,1,5};
-     *
-     *  假设index = 3
-     *
-     *  思路:从index位置开始,后面的覆盖前面的 - arr[i] = arr[i+1]
-     *  {5,4,5,2,1,5,5};
+     * {5,4,5,7,2,1,5};
+     * <p>
+     * 假设index = 3
+     * <p>
+     * 思路:从index位置开始,后面的覆盖前面的 - arr[i] = arr[i+1]
+     * {5,4,5,2,1,5,5};
      *
      * @param index
      * @return
      */
-    public static int[] delByPos(int[] arr,int index){
-        if(null==arr||arr.length==0)
+    public static int[] delByPos(int[] arr, int index) {
+        if (null == arr || arr.length == 0)
             return new int[0];
 
         //1.定义一个临时数组，确定长度
         //长度就是arr的长度，因为要把arr的数拷贝到temp中
-        int[] temp=new int[arr.length];
+        int[] temp = new int[arr.length];
 
         //2.拷贝
         for (int i = 0; i < arr.length; i++) {
-            temp[i]=arr[i];
+            temp[i] = arr[i];
         }
 
         //3.从index开始，让后面的数替代前面的数
-        for(int i=index;i<temp.length-1;i++){//因为i+1不能超过temp的长度
-            temp[i]=temp[i+1];
+        for (int i = index; i < temp.length - 1; i++) {//因为i+1不能超过temp的长度
+            temp[i] = temp[i + 1];
         }
 
         //4.再创建一个数组，去除最后一个重复的数据
-        int[] news=new int[temp.length-1];//长度就是temp数组长度去掉最后一个重复数据
+        int[] news = new int[temp.length - 1];//长度就是temp数组长度去掉最后一个重复数据
         for (int i = 0; i < news.length; i++) {
-            news[i]=temp[i];
+            news[i] = temp[i];
         }
         return news;
     }
 
     /**
      * 数组排重 - 去除数组中重复的数据,只保留1个.
-     *
+     * <p>
      * 思路:
      * arr = {5,4,5,7,2,1,5};
-     *
+     * <p>
      * 定义数组
      * temps= {0,0,0,0,0,0,0};
-     *
+     * <p>
      * 永远将arr[0]放入到temp中 -> temp[0] = 5
      * temps= {5,0,0,0,0,0,0};
-     *
+     * <p>
      * 调用根据元素删除的方法->立即到arr中将刚刚的arr[0]全部删除
      * arr -> {4,7,2,4,1};
-     *
+     * <p>
      * arr = temp;
-     *
+     * <p>
      * temps[1] = arr[0] = 4
      * temps= {5,4,7,2,1,0,0};
      *
@@ -285,7 +288,7 @@ public class ArraysUtil {
             if (arr.length == 0)
                 break;
         } while (true);
-        temp=Arrays.copyOf(temp,pos);//复制该数组的前pos位
+        temp = Arrays.copyOf(temp, pos);//复制该数组的前pos位
         return temp;
     }
 
@@ -293,24 +296,25 @@ public class ArraysUtil {
     /**
      * 思路:
      * arr = {5,4,5,7,2,1,5};
-     *
+     * <p>
      * i=0,接下来遍历j=i+1位置开始->数组的最后
-     *
+     * <p>
      * if(arr[i] == arr[j]){
-     *     //根据下标删除
+     * //根据下标删除
      * }
-     *
+     * <p>
      * 数组排重 - 去除数组中重复的数据,只保留1个.
+     *
      * @param arr
      * @return
      */
-    public static int[] delDoubleElement02(int[] arr){
-        if(null==arr||arr.length==0)
+    public static int[] delDoubleElement02(int[] arr) {
+        if (null == arr || arr.length == 0)
             return null;
 
         //1 2 2 2 5 6 7
         //1 2 2 5 6 7
-        for(int i=0;i< arr.length;i++){
+/*        for(int i=0;i< arr.length;i++){
             for(int j=i+1;j<arr.length;j++){
                 if(arr[i]==arr[j]){
                     arr=delByPos(arr,j);
@@ -318,16 +322,16 @@ public class ArraysUtil {
                     j--;
                 }
             }
-        }
+        }*/
 
         //也可以从后往前删，避免漏掉
-//        for (int i = 0; i < arr.length; i++) {
-//            for (int j = arr.length; j >=i+1 ; j--) {
-//                if(arr[i]==arr[j]){
-//                    arr=delByIndex(arr,j);
-//                }
-//            }
-//        }
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = arr.length - 1; j >= i + 1; j--) {
+                if (arr[i] == arr[j]) {
+                    arr = delByIndex(arr, j);
+                }
+            }
+        }
 
         return arr;
 
@@ -335,28 +339,29 @@ public class ArraysUtil {
 
     /**
      * 数组排重 - 去除数组中重复的数据,只保留1个.
+     *
      * @param arr
      * @return
      */
-    public static int[] delDoubleElement03(int[] arr){
-        if(null==arr||arr.length==0)
+    public static int[] delDoubleElement03(int[] arr) {
+        if (null == arr || arr.length == 0)
             return null;
 
         //1.定义一个布尔类型的数组
-        boolean[] flags=new boolean[arr.length];
+        boolean[] flags = new boolean[arr.length];
 
         //2.全部设置成true
 //        for (int i = 0; i < flags.length; i++) {
 //            flags[i]=true;
 //        }
 
-        Arrays.fill(flags,true);//统一进行赋值
+        Arrays.fill(flags, true);//统一进行赋值
 
         //把原数组中重复出现的元素的设置成false
         for (int i = 0; i < arr.length; i++) {
-            for (int j = i+1; j < arr.length; j++) {
-                if(arr[i]==arr[j]){
-                    flags[j]=false;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (arr[i] == arr[j]) {
+                    flags[j] = false;
                 }
             }
         }
@@ -364,7 +369,7 @@ public class ArraysUtil {
         //定义一个计数器 - 新数组的长度
         int count = 0;
         for (int i = 0; i < flags.length; i++) {
-            if(flags[i])
+            if (flags[i])
                 count++;
         }
 
@@ -373,7 +378,7 @@ public class ArraysUtil {
         int pos = 0;//下标计数器
 
         for (int i = 0; i < arr.length; i++) {
-            if(flags[i]){
+            if (flags[i]) {
                 temp[pos++] = arr[i];
             }
         }
@@ -382,37 +387,39 @@ public class ArraysUtil {
 
     /**
      * 在arr数组的指定pos下标处插入一个指定的值target
+     *
      * @param arr
      * @param pos
      * @param target
      * @return
      */
-    public static int[] insertOneElement(int[] arr,int pos,int target){
+    public static int[] insertOneElement(int[] arr, int pos, int target) {
         //参数有效性判断....
 
         //1. 定义一个新的目标数组
-        int[] temp = new int[arr.length+1];
+        int[] temp = new int[arr.length + 1];
 
         // {1,2,34,4,5};
 
         //2. pos之前
-        System.arraycopy(arr,0,temp,0,pos);
+        System.arraycopy(arr, 0, temp, 0, pos);
         //3. pos处
         temp[pos] = target;
         //4. pos之后
-        System.arraycopy(arr,pos,temp,pos+1,arr.length-pos);
+        System.arraycopy(arr, pos, temp, pos + 1, arr.length - pos);
 
         return temp;
     }
 
     /**
      * 在arr数组的指定pos下标处插入N个指定的值target
+     *
      * @param arr
      * @param pos
      * @param target
      * @return
      */
-    public static int[] insertOneElement02(int[] arr,int pos,int... target){
+    public static int[] insertOneElement02(int[] arr, int pos, int... target) {
         return null;
     }
 
