@@ -10,12 +10,12 @@ import java.util.Arrays;
  */
 public class ArraySortDemo {
     public static void main(String[] args) {
-        int[] arr={3,4,24,34,2,6,40};
+        int[] arr={3,6,14,29,3,25,5};
         ArraySortDemo a=new ArraySortDemo();
 
         //System.out.println(Arrays.toString(a.selectSort(arr)));
-        System.out.println(Arrays.toString(a.bubbleSort(arr)));
-        //System.out.println(Arrays.toString(a.quickSort(arr,0,7)));
+        //System.out.println(Arrays.toString(a.bubbleSort(arr)));
+        System.out.println(Arrays.toString(a.quickSort(arr,0,arr.length-1)));
         //System.out.println(Arrays.toString(a.directInsertSort(arr)));
         System.out.println(Arrays.toString(arr));
     }
@@ -96,18 +96,20 @@ public class ArraySortDemo {
     }
 
     public int getPos(int[] arr,int low,int high){
+        int i=low;
+        int j=high;
         //把数组的第一个元素作为基准数
-        int val=arr[low];
-        while(low<high){
-            while(low<high&&arr[high]>val)
-                --high;
-            arr[low]=arr[high];
-            while(low<high&&arr[low]<val)
-                ++low;
-            arr[high]=arr[low];
+        int val=arr[i];
+        while(i<j){
+            while(i<j&&arr[j]>=val)
+                --j;
+            arr[i]=arr[j];
+            while(i<j&&arr[i]<val)
+                ++i;
+            arr[j]=arr[i];
         }
         //终止while循环后a[low]的值和a[high]的值一定是相等的
-        arr[low]=val;
-        return low;
+        arr[i]=val;
+        return i;
     }
 }
