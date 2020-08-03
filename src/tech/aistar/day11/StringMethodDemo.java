@@ -23,7 +23,7 @@ public class StringMethodDemo {
         //3.copyValueOf(char[] data)
         char[] chars={'a','b','c','d','e','f'};
         String str2=String.copyValueOf(chars);
-        System.out.println(str2);
+        System.out.println(str2);//abcdef
 
         //copyValueOf(char[] date,int start,int count)
         String str3=String.copyValueOf(chars,0,4);//从0开始，长度为4
