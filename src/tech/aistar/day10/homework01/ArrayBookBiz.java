@@ -17,44 +17,27 @@ public class ArrayBookBiz implements IBookBiz {
 
     private Book[] books = new Book[CAPACITY];
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public Book[] getBooks() {
-        return books;
-    }
-
-    public void setBooks(Book[] books) {
-        this.books = books;
-    }
 
     @Override
     public void add(Book b) {
-        IBookBiz bookBiz = new IBookBiz() {
-            @Override
-            public void add(Book b) {
-                books=Arrays.copyOf(books,books.length+1);
-                books[books.length-1]=b;
-            }
 
-            @Override
-            public void deleteByName(String name) {
+    }
 
-            }
+    @Override
+    public void deleteByName(String name) {
 
-            @Override
-            public void outputAllBooks() {
-                for (Book book : books) {
-                    System.out.println(book);
-                }
-            }
-        };
+    }
 
+    @Override
+    public void deleteById(int id) {
+
+    }
+
+    @Override
+    public void outputAllBooks() {
+
+    }
+}
 
 
 
