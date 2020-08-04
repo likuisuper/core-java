@@ -448,6 +448,124 @@ System.out.println(sets.size());
 
 
 
+## clone方法
+
+~~~java
+ protected native Object clone() throws CloneNotSupportedException;
+ native也是关键字 - 调用的是本地方法栈中的方法
+~~~
+
+* 浅拷贝 - java.lang.Object类中默认提供的clone方法就是浅拷贝(浅克隆,浅复制,浅层复制)
+
+  * 修改原来对象的基本数据类型以及***String类型以及Date类型***,是不会对克隆出来的对象造成任何影响的
+  * 修改原来对象中的对象类型的时候,那么会对拷贝出来的对象造成影响的.
+  * 总结:基本数据类型不共享,对象类型共享.
+
+* 深拷贝
+
+  并不高效,可以多次使用,提高代码的复用性.
+
+  ***所有的类型都不共享.***
+
+  应用场景:应用程序中存在A对象,然后需要一个**[独立的B对象](
+              //特点:修改原对象b1,看是否对拷贝出来的副本对象b2造成影响.
+              b1.setId(100);)**.B对象和A对象中所有的属性值高度保持一致.
+
+  重写clone方法,实现自己的业务逻辑.
+
+  ~~~java
+  		/**
+       * 深拷贝 - 所有的类型都不共享,原来的对象和副本对象是俩个完全独立的对象.
+       * @return
+       * @throws CloneNotSupportedException
+       */
+      @Override
+      public Object clone() throws CloneNotSupportedException {
+          Book newBook = new Book();//副本对象
+  
+          //副本对象中要重新设置原来对象中的所有的值.
+          newBook.setId(id);
+          newBook.setIsbn(isbn);
+          newBook.setBookName(bookName);
+          //其余属性一一设置..
+  
+          //设置关联的属性
+          if(null!=info){
+              BookInfo bookInfo = new BookInfo();
+              newBook.setInfo(bookInfo);
+              
+              newBook.getInfo().setId(info.getId());
+              newBook.getInfo().setRemark(info.getRemark());
+          }
+  
+          return newBook;
+      }
+  ~~~
+
+  
+
+
+
+需要克隆的对象所在的类一定更要实现java.lang.Cloneable接口.否则将会抛出java.lang.CloneNotSupportedException不能被克隆的异常.
+
+
+
+### clone和new的区别
+
+* new实现:在JVM中申请一块空的区域,然后通过构造方法来对属性进行赋值的.
+
+* clone实现:调用该方法,没有走构造,但是拷贝出来的对象是存在属性值,绝对不是通过构造方法来进行赋值的.
+
+  直接在内存区域中,肯定创建一个块区域的,但是是直接将原来对象的所有的属性的值直接拷贝一份到这个新的区域,省却了通过构造方法来对属性进行赋值的过程,所以相对速度会快一点.
+
+
+
+## getClass
+
+简介:获取类的class实例,每个类都是经过***类加载器***,每个类都会映射成Class类的对象.
+
+Class类是用来描述类的类.未来,***它是我们学习的反射技术的基础类.***
+
+特点:一个类无论被实例化多少次,那么它在内存中的class实例永远只有1个.
+
+~~~java
+public final native Class<?> getClass();
+~~~
+
+
+
+获取类的class实例的几种方式:
+
+* 对象.getClass();
+* 类名.class;
+* Class.forName("类的全限定名");
+* 基本数据类型.class
+
+
+
+## finalize()
+
+~~~java
+protected void finalize() throws Throwable { }
+~~~
+
+"不确定性很大",当GC垃圾回收线程想要回收一个垃圾对象之前,会调用这个对象的finalize(重写),来进行"垂死"之前的"挣扎".
+
+***笔试题:final和finally和finalize三者区别!!!***
+
+
+
+# 访问修饰符
+
+|                    | 所有类 | 子类中 | 同包中 | 本类中 |
+| ------------------ | ------ | ------ | ------ | ------ |
+| public 公开的      | √      | √      | √      | √      |
+| protected 受保护的 | ×      | √      | √      | √      |
+| 缺省的             | ×      | ×      | √      | √      |
+| private 私有的     | ×      | ×      | ×      | √      |
+
+
+
 # 任务
 
 * java.lang.String类中提供的常用的方法自己敲一遍.
@@ -461,21 +579,124 @@ System.out.println(sets.size());
     
     //del("ow","hellorld")
      public static String del(String delStr,String oldStr){
-      
-      }
+      	//用递归算法来实现...
+        //abcedbceeebcwe -> bc整体
+    
+    		//1. 出口 - 判断字符串中是否包含bc
+    
+    		//2. delete->删除[start,end)
+    	  //del("aedeeewe","bc")
+     }
   
-  2. 第一个串: abcdededeffffffoo
+2. 第一个串: abcdededeffffffoo
      第二个串: ffffffpopodededekkk
        
      找俩个字符串中的最大长度的公串.
      dedede ffffff
   ~~~
-
   
 
 
 
+# 字符串处理类
 
+* java.lang.String类 - 不可变的字符串,多线程安全的.
+* java.lang.StringBuilder类 - 可变的字符串,多线程不安全,效率高
+* java.lang.StringBuffer类 - 可变的字符串,多线程安全,效率低
+
+
+
+## 线程问题
+
+~~~java
+public AbstractStringBuilder append(String str) {
+        if (str == null)
+            return appendNull();
+        int len = str.length();
+        ensureCapacityInternal(count + len);
+        str.getChars(0, len, value, count);
+        count += len;
+        return this;
+    }
+StringBuilder中提供的append方法在同一个时刻会存在多个线程在同时执行.
+count+=len;
+假设count = 5,len = 1;
+但是+=不是一个原子性操作(++) - 线程演示案例.
+1. 把count加载寄存器
+2. 在寄存器中+1
+3. 写回内存
+  
+在某个时刻俩个线程拿到的count都是5,都执行+1操作,出来的结果是6
+~~~
+
+
+
+# StringBuilder
+
+~~~java
+char[] value;//存放StringBuilder中的数据的
+int count;//真正的有效的数据
+capacity:容量,默认的容量是16个
+~~~
+
+~~~java
+StringBuilder builder = new StringBuilder("abc");//长度是3个,容量是19个
+//底层肯定是转换成了
+//char[] value = {'a','b','c','','','','','','','',''...};//19个..
+
+//调用append方法 - 学习过的数组的长度一旦确定了,将不能够改变.
+@Override
+public StringBuilder append(String str) {
+  super.append(str);
+  return this;
+}
+
+StringBuilder继承的一个抽象的父类AbstractStringBuilder类
+  
+public AbstractStringBuilder append(String str) {
+        if (str == null)
+            return appendNull();
+        int len = str.length();//len = 3
+        ensureCapacityInternal(count + len);
+        str.getChars(0, len, value, count);
+        count += len;
+        return this;
+    }
+
+private void ensureCapacityInternal(int minimumCapacity) {
+        // overflow-conscious code
+        if (minimumCapacity > value.length)
+            //扩容..
+            expandCapacity(minimumCapacity);
+    }
+
+void expandCapacity(int minimumCapacity) {
+        int newCapacity = value.length * 2 + 2;
+        if (newCapacity < minimumCapacity )
+            newCapacity = minimumCapacity;
+        if (newCapacity < 0) {
+            if (minimumCapacity < 0) // overflow
+                throw new OutOfMemoryError();
+            newCapacity = Integer.MAX_VALUE;
+        }
+        value = Arrays.copyOf(value, newCapacity);
+    }
+~~~
+
+
+
+## String和StringBuilder转换
+
+* String -> StringBuilder
+
+  通过StringBuilder提供的带参构造StringBuilder(String str);
+
+* StringBuilder -> String
+  * 调用StringBuilder类中提供的String toString();
+  * 调用String类型中提供的static String valueOf(Object obj);
+
+* int -> String
+  * 调用String类型中提供的static String valueOf(int i);
 
 
 
