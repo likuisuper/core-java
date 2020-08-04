@@ -1,0 +1,29 @@
+现有如下内容:
+
+StringBuilder builder = new StringBuilder();
+
+
+builder.append("This is a log file,it was store at")
+.append("\"d:\\Program File\\temp\" ")
+.append("directory.the format of log file was:\n")
+.append("20130509:Jack:M:1990-08-08");
+
+完成如下要求:
+1.截取此内容中的路径子字符串
+  打印出的结果为(找出包裹路径的双引号的下标,substring)
+  d:\Program File\temp
+
+2.把第一个引号之前的部分中的所有空格替换为#
+  把第二个引号之后的部分中的所有空格替换为*
+
+3.把\n后面的字符串取出打印
+
+4.以:作为切割符,把\n后面截取出来的字符串分段打印
+  20130509
+  Jack
+  M
+  1990-08-08
+
+  注:截取时,尽可能不要取数字符串的下标
+   StringBuilder和String类中找方法
+ 
