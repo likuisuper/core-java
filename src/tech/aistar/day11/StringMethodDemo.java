@@ -95,7 +95,7 @@ public class StringMethodDemo {
         System.out.println(String.valueOf('你'));
 
         //19.valueOf(char[] data)
-        //返回 char 数组参数的字符串表示形式。
+        //返回 char 数组参数的字符串表示形式。 ·
         System.out.println(String.valueOf(chars));//abcdef
     }
 }

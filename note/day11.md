@@ -118,3 +118,390 @@ public class StringDemo {
 }
 ~~~
 
+
+
+# 设计模式
+
+## 设计模式概念
+
+设计模式（Design Pattern）**是一套被反复使用、多数人知晓的、经过分类的、代码设计经验的总结**。
+
+使用设计模式的目的：为了**代码可重用性**、让代码更容易被他人理解、保证代码可靠性。 设计模式使代码**编写真正工程化**；设计模式是软件工程的基石脉络，如同大厦的结构一样。
+
+项目中合理地运用设计模式可以完美地解决很多问题，每种模式在现实中都有相应的原理来与之对应，**每种模式都描述了一个在我们周围不断重复发生的问题，以及该问题的核心解决方案**，这也是设计模式能被广泛应用的原因。
+
+
+
+总体来说设计模式分为三大类：
+
+**创建型模式**，共五种：**工厂方法模式**、**抽象工厂模式**、**单例模式**、**建造者模式**、**原型模式**。
+
+**结构型模式**，共七种：适配器模式、**装饰器模式**、代理模式、外观模式、桥接模式、组合模式、享元模式。
+
+**行为型模式**，共十一种：策略模式、**模板方法模式**、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。
+
+**其实还有两类：并发型模式和线程池模式**
+
+
+
+## 简单工厂
+
+简单工厂模式是属于创建型模式，**但不属于23种GOF设计模式之一**。简单工厂模式是由一个工厂对象决定创建出哪一种产品类的实例。简单工厂模式是工厂模式家族中最简单实用的模式，可以理解为是不同工厂模式的一个特殊实现。简单工厂一般分为：**普通简单工厂**、**多方法简单工厂**、**静态方法简单工厂**。 
+
+
+
+### 普通简单工厂
+
+~~~java
+package tech.aistar.design.factory.common.test01;
+
+/**
+ * 本类用来演示:普通简单工厂
+ * 作用:根据传入的参数,来返回具体的某个产品
+ *
+ * @author: success
+ * @date: 2020/8/3 9:58 上午
+ */
+public class SenderFactory {
+
+    //多态的应用 - 面向接口编程
+    //3 - 方法的返回类型写成接口,方法体的返回值可以写成这个接口的任何一个实现类对象
+    public Sender getInstance(String product){
+        Sender sender = null;
+        //一个工厂是可以创建多个产品的.
+        if("QQ".equals(product)){
+            sender = new QQSender();
+        }else if("WX".equals(product)){
+            sender = new WXSender();
+        }else{
+            System.out.println("对不起,产品不存在!");
+        }
+        return sender;
+    }
+}
+~~~
+
+
+
+### 多方法简单工厂
+
+~~~java
+package tech.aistar.design.factory.common.test02;
+
+/**
+ * 多方法简单工厂 - 每个产品对应一个创建方法
+ *
+ * 当新增一个产品的时候,还是动工厂类 - 不符合"开闭原则"
+ * 
+ *
+ * @author: success
+ * @date: 2020/8/3 9:58 上午
+ */
+public class SenderFactory {
+
+    public Sender produceQQ(){
+        return new QQSender();
+    }
+
+    public Sender produceWX(){
+        return new WXSender();
+    }
+}
+~~~
+
+
+
+### 静态方法简单工厂
+
+~~~java
+package tech.aistar.design.factory.common.test03;
+
+/**
+ * 静态方法简单工厂 - 每个产品对应一个创建方法
+ *
+ * 当新增一个产品的时候,还是动工厂类 - 不符合"开闭原则"
+ *
+ *
+ * @author: success
+ * @date: 2020/8/3 9:58 上午
+ */
+public class SenderFactory {
+
+    public static Sender produceQQ(){
+        return new QQSender();
+    }
+
+    public static Sender produceWX(){
+        return new WXSender();
+    }
+}
+~~~
+
+
+
+### 简单工厂优缺点
+
+优点：
+
+- 很明显，简单工厂的特点就是“简单粗暴”，通过一个含参的工厂方法，我们可以实例化任何产品类，上至飞机火箭，下至土豆面条，无所不能。所以简单工厂有一个别名：上帝类。
+
+缺点：
+
+- 任何”东西“的子类都可以被生产，负担太重。当所要生产产品种类非常多时，工厂方法的代码量可能会很庞大
+- **在遵循开闭原则（对拓展开放，对修改关闭）的条件下，简单工厂对于增加新的产品，无能为力。因为增加新产品只能通过修改工厂方法来实现。**
+
+
+
+### 拓展
+
+开发中的简单工厂设计模式的应用 - **反射工厂**
+
+* ***反射创建对象***
+
+  * 获取的类的class实例
+
+  * 调用newInstance方法
+
+  * 代码
+
+    ~~~java
+    //1. 获取类的class实例
+    try {
+      Class<?> c = Class.forName("tech.aistar.design.factory.common.test04.QQSender");
+    
+      //2. 反射创建对象
+      Sender qq = (Sender) c.newInstance();
+    
+    } catch (ClassNotFoundException e) {//类的全限定名不能写错
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    }
+    ~~~
+
+
+
+##工厂方法模式
+
+简单工厂模式有一个问题就是，类的创建依赖工厂类，也就是说，**如果想要拓展程序，必须对工厂类进行修改，这违背了开闭原则，所以，从设计角度考虑，有一定的问题，如何解决？就用到工厂方法模式，创建一个工厂接口和创建多个工厂实现类，这样一旦需要增加新的功能， 直接增加新的工厂类就可以了，不需要修改之前的代码**。 
+
+### 工厂方法模式优缺点
+
+优点：
+
+- 工厂方法模式就很好的减轻了工厂类的负担，把某一类/某一种东西交由一个工厂生产；（对应简单工厂的缺点1）
+- 同时增加某一类”东西“并不需要修改工厂类，只需要添加生产这类”东西“的工厂即可，**使得工厂类符合开闭原则。**
+
+缺点：
+
+- 相比简单工厂，实现略复杂。
+- 对于某些可以形成产品族的情况处理比较复杂（相对抽象工厂）。
+
+
+
+## 抽象工厂
+
+抽象工厂模式是所有形态的工厂模式中最为抽象和最具一般性的一种形态。抽象工厂模式是指当有多个抽象角色时，使用的一种工厂模式。**抽象工厂模式可以向客户端提供一个接口，使客户端在不必指定产品的具体的情况下，创建多个*产品族*中的产品对象**。根据里氏替换原则，任何接受父类型的地方，都应当能够接受子类型。因此，实际上系统所需要的，仅仅是类型与这些抽象产品角色相同的一些实例，而不是这些抽象产品的实例。换言之，也就是这些抽象产品的具体子类的实例。工厂类负责创建抽象产品的具体子类的实例。
+
+
+
+## 抽象工厂模式优缺点
+
+优点： 
+
+- 抽象工厂模式隔离了具体类的生产，使得客户并不需要知道什么被创建。
+- 当一个产品族中的多个对象被设计成一起工作时，它能保证客户端始终只使用同一个产品族中的对象。
+- 增加新的具体工厂和产品族很方便，无须修改已有系统，符合“开闭原则”。
+
+​        缺点：
+
+- 增加新的产品等级结构很复杂，需要修改抽象工厂和所有的具体工厂类。
+
+
+
+# java.lang.Object
+
+它是所有的类的根类,一个类都是直接或者间接继承这个Object对象的.它里面提供的API方法,应该就是所有对象都是可能使用的.
+
+* String toString();//输出对象的内存地址.
+
+  ~~~java
+  public String toString(){
+    return getClass().getName()+"@"+Integer.toHexString(hashcode());
+  }
+  ~~~
+
+* equals方法
+
+  boolean equals();//比较俩个对象
+
+  基本类型使用 == 比较,对象类型一般使用equals比较.
+
+  ==比较方式
+
+  两种说法***:基本类型使用 == 比较的是值,对象类型使用 == 比较的是内存地址.***
+
+  第二种说法: ***== 比较的就是值.***
+
+  java.lang.Object中提供的equals方法的底层:
+
+  底层实际上仍然是使用了 == 进行了比较.
+
+  ~~~java
+  public boolean equals(Object obj) {
+    return (this == obj);
+    //return b1 == b2;
+  }
+  
+  Book b1 = new Book(1,"1001","java");
+  Book b2 = new Book(1,"1001","java");
+  System.out.println(b1 == b2);//false
+  
+  System.out.println(b1.equals(b2));//false
+  ~~~
+
+## 重写equals方法
+
+~~~java
+@Override
+public boolean equals(Object obj){
+  //1. 非空性
+  if(null == obj)
+    return false;
+  //2. 自反性
+  if(this == obj)
+    return true;
+  //3. 比较对象中具体的属性的值
+  //比如假设只要俩个对象的id是一致的,那么就认为是同一个对象
+  //是同一个对象,就返回true
+  if(obj instanceof Book){
+    Book b = (Book)obj;
+    return this.id == b.getId();
+  }
+  return false;
+}
+~~~
+
+
+
+## 关于hashcode
+
+equals方法通常和hashcode同时出现,"好哥俩".出现在equals方法中的属性肯定也会出现在hashcode方法里.
+
+java.lang.Object中提供的
+
+~~~java
+public native int hashCode();
+~~~
+
+把一个对象放到内存之前,先是调用hashcode方法来得到hash值,简单理解 - 一个hash值对应一个内存地址.
+
+* 当对象比较多的时候,hash值要尽可能不重复,尽可能散列.
+* 计算这个hash值的时候,速度要很快.
+
+选用了一个非常好的质数31 - 反复验证,质数*N,是最有可能不重复的.
+
+31*N = (N << 5)-N;
+
+hashcode存在的意义在于去重.配合我们以后学习的集合框架来使用的.
+
+[当hash值产生哈希碰撞的时候,还需要进一步还是用equals来判断是否为同一个对象.]
+
+~~~java
+//无序不可重复
+Set<Book> sets = new HashSet<>();
+
+Book b1 = new Book(1,"1001","java");
+Book b2 = new Book(2,"1002","java");
+Book b3 = new Book(3,"1003","java");
+Book b4 = new Book(1,"1004","java");
+
+sets.add(b1);
+sets.add(b2);
+sets.add(b3);
+sets.add(b4);
+
+System.out.println(sets.size());
+
+如果没有hashcode方法存在的话,那么每次调用add方法都会执行equals方法,比较消耗时间的.提供hashCode的目的在于提供程序的性能.
+
+当每次调用add方法的时候,会调用该对象的hashCode()方法来得到一个哈希值.根据这个哈希值来确定一个地址.然后
+将这个对象放入到该地址对应的区域中.
+  
+当第二次调用add方法的时候,仍然还是会先调用该对象的hashCode方法来得到一个哈希值
+如果这个哈希值在这之前没有出现过,说明可以直接得到一个新的地址,然后直接把对象扔进去
+如果这个哈希值在这之前曾经出现过,说明这个位置可能被占用了,但是由于哈希值是通过计算得来的,它有可能存在哈希碰撞
+[哈希冲突],因此还不能判断这个对象和之前的那个对象是同一个对象,这个时候才会要再次调用equals方法来进一步判断
+如果equals返回true,说明这个位置真的被占用了,真的是同一个对象了,如果equals返回false,还是允许直接放.
+~~~
+
+
+
+经典的四句话:
+
+* 当俩个对象相同的时候[equals返回true],hashCode一定是一样的.
+* 当俩个对象不相同的时候,hashCode不一定不相等.
+* HashCode如果不一样,俩个对象肯定不同.
+* HashCode一样,俩个对象不一定相等.
+
+
+
+# 任务
+
+* java.lang.String类中提供的常用的方法自己敲一遍.
+* java.lang.StringBuilder类中提供的常用的方法自己也敲一遍
+
+* 有基础的,自我感觉特别棒棒棒的!!!
+
+  ~~~java
+  1. 根据指定的字符串到原来的字符串中进行删除操作!//送分题
+     //helloworld
+    
+    //del("ow","hellorld")
+     public static String del(String delStr,String oldStr){
+      
+      }
+  
+  2. 第一个串: abcdededeffffffoo
+     第二个串: ffffffpopodededekkk
+       
+     找俩个字符串中的最大长度的公串.
+     dedede ffffff
+  ~~~
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
