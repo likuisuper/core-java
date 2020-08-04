@@ -98,6 +98,21 @@ public class Book implements Cloneable{
         this.info = info;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Book book = (Book) o;
+//
+//        return id == book.id;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return id;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,13 +120,18 @@ public class Book implements Cloneable{
 
         Book book = (Book) o;
 
-        return id == book.id;
+        if (id != book.id) return false;
+        return isbn != null ? isbn.equals(book.isbn) : book.isbn == null;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        int result = id;
+        result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
+        return result;
     }
+
+
 //    @Override
 //    public boolean equals(Object obj) {
 //        //1.非空性
