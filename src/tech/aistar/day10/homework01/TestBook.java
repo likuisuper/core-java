@@ -1,6 +1,9 @@
 package tech.aistar.day10.homework01;
 
 
+import java.util.Date;
+import java.util.UUID;
+
 /**
  * 本类功能:
  *
@@ -9,27 +12,30 @@ package tech.aistar.day10.homework01;
  */
 public class TestBook {
     public static void main(String[] args) {
-        IBookBiz bookBiz=new ArrayBookBiz();
-        Book book1=new Book(1,"完美世界",78);
+        Book b1 = new Book(1, UUID.randomUUID().toString(),"丰乳肥臀",100.0d,"莫言",new Date());
+        Book b2 = new Book(2, UUID.randomUUID().toString(),"等一个人的咖啡",90.0d,"九把刀",new Date());
+        Book b3 = new Book(3, UUID.randomUUID().toString(),"西游记",80.0d,"吴承恩",new Date());
+        Book b4 = new Book(4, UUID.randomUUID().toString(),"水浒传",70.0d,"施耐庵",new Date());
+        Book b5 = new Book(5, UUID.randomUUID().toString(),"等一个人的开发",100.0d,"十把刀",new Date());
+        Book b6 = new Book(6, UUID.randomUUID().toString(),"丰乳肥臀",60.0d,"莫言",new Date());
 
-        Book book2=new Book(2,"遮天",148);
+        IBookBiz biz=new ArrayBookBiz();
 
-        Book book3=new Book(3,"凡人修仙传",76);
+        //添加图书的方法
+        biz.add(b1);
+        biz.add(b2);
+        biz.add(b3);
+        biz.add(b4);
+        biz.add(b5);
 
-        Book book4=new Book(4,"求魔",57);
+        biz.add(b6);
 
-        Book book5=new Book(5,"仙逆",120);
+        //删除
+        biz.deleteByName("丰乳肥臀");
 
-        Book book6=new Book(6,"童话",220);
-
-        bookBiz.add(book1);
-        bookBiz.add(book2);
-        bookBiz.add(book3);
-        bookBiz.add(book4);
-        bookBiz.add(book5);
-        bookBiz.add(book6);
+        biz.deleteById(5);
 
 
-        bookBiz.outputAllBooks();
+        biz.outputAllBooks();
     }
 }
