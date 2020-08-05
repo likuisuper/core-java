@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 本类功能:
+ * 本类功能:反射技术来破坏单例
  *
  * @author cxylk
  * @date 2020/8/5 20:41
