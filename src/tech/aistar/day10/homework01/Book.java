@@ -25,6 +25,12 @@ public class Book {
     public Book() {
     }
 
+    public Book(int id, String isbn, String bookName) {
+        this.id = id;
+        this.isbn = isbn;
+        this.bookName = bookName;
+    }
+
     public Book(int id, String isbn, String bookName, double price, String author, Date publishDate) {
         this.id = id;
         this.isbn = isbn;
