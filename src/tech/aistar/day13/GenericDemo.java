@@ -28,6 +28,12 @@ public class GenericDemo {
         return t;
     }
 
+    /**
+     * 静态带返回类型
+     * @param t
+     * @param <T>
+     * @return
+     */
     public static <T> T find (T t){
         return t;
     }
@@ -42,5 +48,6 @@ class GenericTest{
         System.out.println(n);
 
         System.out.println(GenericDemo.find(3.14));
+        System.out.println(GenericDemo.find("hello"));
     }
 }
