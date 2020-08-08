@@ -20,6 +20,15 @@ public class MapDemo {
         map.put("烬","科比式外交");
         //map.put("烬","科比式外交");
 
+        Set<Map.Entry<String,String>> set=map.entrySet();
+        Iterator<Map.Entry<String,String>> iterator1=set.iterator();
+        while(iterator1.hasNext()){
+            System.out.println(iterator1.next());
+        }
+        //亚索=长路漫漫,唯剑作伴
+        //劫=吾所成之事,不可逆也
+        //烬=科比式外交
+
         //输出map中键值对的个数,键值唯一
         System.out.println(map.size());//当有重复的key时，size为3
 
