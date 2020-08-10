@@ -25,9 +25,9 @@ public class MapDemo {
         while(iterator1.hasNext()){
             System.out.println(iterator1.next());
         }
-        //亚索=长路漫漫,唯剑作伴
         //劫=吾所成之事,不可逆也
         //烬=科比式外交
+        //亚索=长路漫漫,唯剑作伴
 
         //输出map中键值对的个数,键值唯一
         System.out.println(map.size());//当有重复的key时，size为3
