@@ -129,5 +129,7 @@ public class TestPurcase {
         }).forEach(e->{
             System.out.println(e.getBrand()+":"+e.getTotal());
         });
+
+
     }
 }
