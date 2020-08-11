@@ -1,0 +1,110 @@
+//节点类，存放节点
+static class Node<K,V> implements Map.Entry<K,V> {
+    final int hash;
+    final K key;
+    V value;
+    Node<K,V> next;//从这里可以看出Node是一个链表
+
+    Node(int hash, K key, V value, Node<K,V> next) {
+        this.hash = hash;
+        this.key = key;
+        this.value = value;
+        this.next = next;
+    }
+
+    public final K getKey()        { return key; }
+    public final V getValue()      { return value; }
+    public final String toString() { return key + "=" + value; }
+
+    public final int hashCode() {
+        return Objects.hashCode(key) ^ Objects.hashCode(value);
+    }
+
+    public final V setValue(V newValue) {
+        V oldValue = value;
+        value = newValue;
+        return oldValue;
+    }
+
+    public final boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (o instanceof Map.Entry) {
+            Map.Entry<?,?> e = (Map.Entry<?,?>)o;
+            if (Objects.equals(key, e.getKey()) &&
+                Objects.equals(value, e.getValue()))
+                return true;
+        }
+        return false;
+    }
+}
+
+//调用put操作
+public V put(K key, V value) {
+    return putVal(hash(key), key, value, false, true);
+}
+
+//putVal方法的第一个参数
+static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);//让高位和低位进行异或操作,保证hash的散列更加均匀
+}
+
+//传入的参数中,如果onlyIfAbsent为true,则不更改现有值,如果evict为false,则表处于创建模式
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+               boolean evict) {
+        Node<K,V>[] tab; //存放链表头结点的数组，数组的每个元素相当于一个桶，好像这个链表就存放于一个元素的空间中
+        Node<K,V> p; //存放于数组i处的（头）节点
+        int n；//数组tab的长度
+        int i; //数组tab的下标值
+        //刚开始table是null或空的时候，调用resize()方法，初始化一个长度为16的tab
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+        //用(n - 1) & hash计算出插入点在数组的下标。如果插入点为null，将此节点存放于此。（&为长运算符，使用在计算boolean表达式时，会强制计算&两边的算式。此处用作位运算，即将n-1及hash均转为二进制数，相加，同为1则结果为1，否则为0，结果始终在[0,n-1]）
+        //（第2个key跟第1个key相同时，必定hash值相同，index也相同）
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);//键值对的next为空
+        //否则就会发生碰撞
+        else {
+            Node<K,V> e; //相当于一个temp，一个暂时存放键值对的节点
+            K k; //一个temp，暂时存放key的值
+            //跟数组头结点p比较，如果key的hash值相等，key对象也相等。为什么要两者都满足，因为根据不同key对象的hashCode计算出来的hash可能相等，所以还需要通过比较引用("==")或者比较对象("equals")的方式判断。
+            //根据hash不同（p.hash == hash为false），可以判断出不是同一个key，符号"&&"有短路功能，所以整体为false，不用每次都去比较key，提高了效率。
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;//将数组的头结点p赋给e，用于更改头结点的value
+            //从下一个else中知道，一个桶只能存放8个节点，大于八个将转成红黑树存储。根据桶中的Entry数，判断p的类型是否是TreeNode类的实例
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);//如果是，使用putTreeVal方法插入Entry
+            //碰撞后，满足与桶中的第一个entry不等，且此时桶中Entry小于等于8个
+            else {
+                for (int binCount = 0; ; ++binCount) {//没有条件，通过break跳出循环
+                    if ((e = p.next) == null) {//当p后没有节点时满足条件，此时桶中就一个Entry；或者此时p为桶中最后一个Entry
+                        p.next = newNode(hash, key, value, null);//新建Entry链接上，此时e为null
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st//当桶中存放第8个元素时，将链表转换成红黑树。
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    //上面的if判断是否跟桶中的第一个Entry相等，而这个if是依次跟桶中的Entry比较
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;//如果此时桶中有多个Entry,执行完两个if后还没跳出循环,e=p.next,相当于p=p.next.继续循环.这个else最重要的一点是要理解---利用e,依次比较桶中的Entry.
+                }
+            }
+            if (e != null) { // existing mapping for key//e不等于null的条件是桶中存在相同的Entry提前跳出循环
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)//onlyIfAbsent默认为false,oldValue可以为null
+                    e.value = value;//替换value
+                afterNodeAccess(e);//LinkedHashMap继承HashMap,此方法在LinkedHashMap中被重写.在这里没什么用,但是在LinkedHashMap中此处调用此方法移动节点到最后.
+                return oldValue;//存在相同Entry时返回oldValue.我原来使用put方法时没想到还有返回值,所以还是要看看源码
+            }
+        }
+        //HashMap继承Serializable,当HashMap被序列化时,transient变量不会被序列化
+        ++modCount;//（当前元素的格式）modCout是transient变量
+        //size也是transient变量，指Map中包含的键值对的数量。threshold默认为16*0.75
+        if (++size > threshold)//如果数组中的Entry大于等于length*0.75
+            resize();//调用resize方法将tab数组扩大为两倍
+        afterNodeInsertion(evict);//LinkedHashMap继承HashMap，此方法在LinkedHashMap中被重写.
+        return null;//默认返回空
+}

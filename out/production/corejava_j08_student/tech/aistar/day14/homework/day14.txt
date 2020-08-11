@@ -1,0 +1,93 @@
+class Purcase{ //购买类
+	private String brand; //品牌
+	private String name; //产品名
+	private double cost; // 费用
+}
+
+List<Purcase> list = new ArrayList<>();
+Purcase p1 = new Purcase("宝洁","洗手粉",18.5);
+Purcase p2 = new Purcase("联合利华","肥皂",4.5);
+Purcase p3 = new Purcase("宝洁","牙膏",32.5);
+Purcase p4 = new Purcase("宝洁","毛巾",14.5);
+Purcase p5 = new Purcase("洁利","洗面奶",26.0);
+Purcase p6 = new Purcase("好迪","洗发水",27.5);
+Purcase p7 = new Purcase("多芬","沐浴露",38.5);
+Purcase p8 = new Purcase("宝洁","洗洁精",3.4);
+
+list.add(p1);
+list.add(p2);
+....
+
+要求:写一个程序,打印出各品牌所花费的总费用.
+[必选,排好序后再打印输出,按花费总费用的降序排序]
+======================================================
+软作业
+HashMap - 必问底层 - put方法底层
+
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+    Node<K,V>[] tab; Node<K,V> p; int n, i;
+    if ((tab = table) == null || (n = tab.length) == 0)
+        n = (tab = resize()).length;
+    if ((p = tab[i = (n - 1) & hash]) == null)
+        tab[i] = newNode(hash, key, value, null);
+    else {
+        Node<K,V> e; K k;
+        if (p.hash == hash &&
+            ((k = p.key) == key || (key != null && key.equals(k))))
+            e = p;
+        else if (p instanceof TreeNode)
+            e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+        else {
+            for (int binCount = 0; ; ++binCount) {
+                if ((e = p.next) == null) {
+                    p.next = newNode(hash, key, value, null);
+                    if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+                        treeifyBin(tab, hash);
+                    break;
+                }
+                if (e.hash == hash &&
+                    ((k = e.key) == key || (key != null && key.equals(k))))
+                    break;
+                p = e;
+            }
+        }
+        if (e != null) { // existing mapping for key
+            V oldValue = e.value;
+            if (!onlyIfAbsent || oldValue == null)
+                e.value = value;
+            afterNodeAccess(e);
+            return oldValue;
+        }
+    }
+    ++modCount;
+    if (++size > threshold)
+        resize();
+    afterNodeInsertion(evict);
+    return null;
+}
+================================
+HashMap的扩容机制能够搞透
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

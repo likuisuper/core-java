@@ -423,6 +423,298 @@ E unlink(Node<E> x) {//x是删除目标节点Node
 
 
 
+# HashMap底层
+
+笔试题 - put方法的底层原理和流程
+
+![](imgs/put.png) 
+
+~~~java
+public V put(K key, V value) {
+  return putVal(hash(key), key, value, false, true);
+}
+hash(key) - 哈希算法,这个函数是一个扰动函数.
+  
+static final int hash(Object key) {
+  int h;
+  return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+(h = key.hashCode()) ^ (h >>> 16);
+key的哈希值和key的哈希值的高16位进行异或操作 - 目的就是让计算的得到的哈希值足够散列.
+尽可能减少哈希碰撞[哈希冲突]
+~~~
+
+putVal
+
+补充:jdk8.0之前,hashmap底层的数据结构 - 桶数组 + 链表结构
+
+jdk8.0开始,hashmap底层的数据结构 - 桶数组 + 链表结构(单向链表) + 红黑树[未来由***小强***同学分享]
+
+为什么要有红黑树 - 数组的查询复杂度O(1),增删复杂度O(n).链表结构的最坏查询复杂度O(n),增删O(1).
+
+这两种数据结构都有明显的缺陷和优点.所以JDK8.x引入了红黑树,为了平衡数组和链表俩者之间的缺陷.
+
+平衡空间和时间的问题.查询和增删的复杂度O(logN)
+
+~~~java
+/**
+     * Implements Map.put and related methods
+     *
+     * @param hash hash for key
+     * @param key the key
+     * @param value the value to put
+     * @param onlyIfAbsent if true, don't change existing value
+     * @param evict if false, the table is in creation mode.
+     * @return previous value, or null if none
+     */
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+               boolean evict) {
+  Node<K,V>[] tab; Node<K,V> p; int n, i;
+  //table就是桶数组.
+  if ((tab = table) == null || (n = tab.length) == 0)
+    //resize()扩容操作...
+    //n = 16 , 数组的长度就是16
+    n = (tab = resize()).length;
+  //i = (n - 1) & hash
+  //下标是如何进行计算的
+  //(数组长度-1) & 哈希值(扰动函数)
+  //为了让得到的这个下标要在数组的下标范围之内.
+  if ((p = tab[i = (n - 1) & hash]) == null)
+    //说明计算得到的哈希值并没有产生哈希碰撞
+    //哈希值如果不一样,对象肯定不一样.
+    //直接将新的节点放入到这个位置.
+    tab[i] = newNode(hash, key, value, null);
+  else {//说明hash开始碰撞了 - 从第二次以后
+    Node<K,V> e; K k;
+    //哈希值一样还不能说明是同一个对象,所以它会继续调用equals方法.
+    if (p.hash == hash &&
+        ((k = p.key) == key || (key != null && key.equals(k))))
+      e = p;//p是产生哈希碰撞的那个位置的Node节点[旧节点]
+    
+    else if (p instanceof TreeNode)//判断是否为红黑树结构
+      e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+    else {//哈希值一样,但是key不一样.
+      //转成了一个链表结构
+      for (int binCount = 0; ; ++binCount) {
+        if ((e = p.next) == null) {//找到最后一个节点
+          //把新的节点挂到最后一个节点上.
+          p.next = newNode(hash, key, value, null);
+          //当binCount>=7,当链表挂的数量达到第8个的时候,就按照红黑树的形式进行插入.
+          if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
+            treeifyBin(tab, hash);
+          break;
+        }
+        //也许链表结构中的某个节点正好和你想要插入的节点的hash和key都是一样.
+        if (e.hash == hash &&
+            ((k = e.key) == key || (key != null && key.equals(k))))
+          //跳出整个循环.
+          break;
+        p = e;
+      }
+    }
+    
+    if (e != null) { // existing mapping for key
+      //将e.value旧值赋值给了一个变量oldValue
+      //这一步没有任何影响,仅仅是为了让调用put方法之后能得到一个
+      //返回值[原来的旧值]
+      V oldValue = e.value;
+      if (!onlyIfAbsent || oldValue == null)
+        //e[旧的节点].value = value[新值]
+        e.value = value;//仅仅是覆盖了value,key仍然保持不变
+      afterNodeAccess(e);
+      return oldValue;
+    }
+  }
+  ++modCount;
+  if (++size > threshold)
+    resize();//扩容...
+  afterNodeInsertion(evict);
+  return null;
+}
+~~~
+
+![](imgs/map2.png) 
+
+
+
+***put流程***
+
+* 每次添加key-value键值对到map集合的时候,先根据key进行hash(key) ^ hash(key) >>> 16
+
+  得到一个哈希值,哈希值就是对应桶数组的下标.
+
+* 桶数组的默认初始大小是16个.
+
+* (p = tab[i = (n - 1) & hash]) == null,根据key得到的哈希值对应的这个位置上的值如果为null,说明这个位置
+
+  还没有被占用,没有被占用那么就直接放入即可 - tab[i] = newNode(hash, key, value, null);
+
+* 哈希产生了碰撞,哈希产生了冲突
+
+  * hash和key高度保持一致 -  e = p;//p肯定是不为null,p是桶数组中的旧节点.
+
+    把旧节点p临时存储到变量e中 - e其实就是旧节点.
+
+  * hash值一样,但是key值不一样
+
+    * 如果旧节点p[链表结构中的第一个节点]属于红黑树,就按照红黑树的方式进行插入
+
+    * 如果旧节点p属于链表结构.在遍历的过程中
+
+      * 如果链表结构的某个节点正好和插入的节点的hash和key又是高度保持一致
+
+        直接可以跳出循环了,旧值覆盖新值
+
+      * 如果插入的新的节点匹配不到任何一个旧的链表上的节点,肯定就可以走到链表的尾部.
+
+        直接将新节点挂到链表结构的尾端.
+
+        * 如果链表结构开始超过8个长度,那么链表结构就会转换成红黑树
+        * 当然,如果执行删除的时候,红黑树少于6个节点的时候,开始转换成链表结构了.
+
+  
+
+## 扩容机制 - 暂时了解 - 冲刺
+
+~~~java
+final Node<K,V>[] resize() {
+  //table默认是null,oldTab也是null,默认的table赋值给了oldTab
+  Node<K,V>[] oldTab = table;
+  //第一次进来oldCap = 0
+  int oldCap = (oldTab == null) ? 0 : oldTab.length;
+  //oldThr = 0,旧的阀值.
+  int oldThr = threshold;
+  //新的容量,新的阀值
+  int newCap, newThr = 0;
+  
+  //第一次进入,不走
+  if (oldCap > 0) {
+    if (oldCap >= MAXIMUM_CAPACITY) {
+      threshold = Integer.MAX_VALUE;
+      return oldTab;
+    }
+    else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+             oldCap >= DEFAULT_INITIAL_CAPACITY)
+      newThr = oldThr << 1; // double threshold
+  }
+  //第一次进来也是不走...
+  else if (oldThr > 0) // initial capacity was placed in threshold
+    newCap = oldThr;
+  else {    
+    // 第一次进来进行新的容量,新的阀值的初始化
+    newCap = DEFAULT_INITIAL_CAPACITY;//16
+    //阀值 = 0.75f*16
+    //0.75 - 扩容因子(试验得到的,空间和时间上的平衡)
+    //扩容阀值 = 扩容因子 * 数组容量.
+    newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+  }
+  if (newThr == 0) {
+    float ft = (float)newCap * loadFactor;
+    newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+              (int)ft : Integer.MAX_VALUE);
+  }
+  //threshold = 扩容阀值
+  threshold = newThr;
+  @SuppressWarnings({"rawtypes","unchecked"})
+  //底层初始化的桶数组Node-Node<K,V>[] newTab = (Node<K,V>[])new Node[16];
+  Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+  table = newTab;
+  if (oldTab != null) {
+    for (int j = 0; j < oldCap; ++j) {
+      Node<K,V> e;
+      if ((e = oldTab[j]) != null) {
+        oldTab[j] = null;
+        if (e.next == null)
+          newTab[e.hash & (newCap - 1)] = e;
+        else if (e instanceof TreeNode)
+          ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+        else { // preserve order
+          Node<K,V> loHead = null, loTail = null;
+          Node<K,V> hiHead = null, hiTail = null;
+          Node<K,V> next;
+          do {
+            next = e.next;
+            if ((e.hash & oldCap) == 0) {
+              if (loTail == null)
+                loHead = e;
+              else
+                loTail.next = e;
+              loTail = e;
+            }
+            else {
+              if (hiTail == null)
+                hiHead = e;
+              else
+                hiTail.next = e;
+              hiTail = e;
+            }
+          } while ((e = next) != null);
+          if (loTail != null) {
+            loTail.next = null;
+            newTab[j] = loHead;
+          }
+          if (hiTail != null) {
+            hiTail.next = null;
+            newTab[j + oldCap] = hiHead;
+          }
+        }
+      }
+    }
+  }
+  return newTab;
+}
+~~~
+
+
+
+# 周六周日笔试题作业
+
+* **ArrayList和LinkedList的区别**
+* ArrayList和Vector的区别
+* List和Set集合有什么区别
+* ArrayList和HashSet区别
+* **HashSet和HashMap有什么区别**
+* **HashMap和Hashtable有什么区别**
+* 进大厂 - ConcurrentHashMap
+* HashSet和TreeSet有什么区别
+* TreeSet和TreeMap有什么区别
+* TreeMap和HashMap有什么区别
+* Collections[工具类]和Collection区别
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
