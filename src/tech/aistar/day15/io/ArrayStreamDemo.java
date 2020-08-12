@@ -49,4 +49,40 @@ public class ArrayStreamDemo {
             e.printStackTrace();
         }
     }
+
+//    public static void copy2(String src,String target){
+//        try(InputStream in=new FileInputStream(src); OutputStream out=new FileOutputStream(target)) {
+//            byte[] buf=new byte[3*1024];
+//
+//            int len=-1;
+//            while(true){
+//                len=in.read(buf);
+//                if(len==-1)
+//                    break;
+//                out.write(buf,0,len);
+//            }
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    public static void copy3(String src,String target){
+//        try(InputStream in=new FileInputStream(src);OutputStream out=new FileOutputStream(target)){
+//            byte[] buf=new byte[3*1024];
+//            int len=-1;
+//            while(true){
+//                len=in.read(buf);
+//                if(len==-1)
+//                    break;
+//                out.write(buf,0,len);
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

@@ -85,4 +85,91 @@ public class ObjectStreamDemo {
             }
         }
     }
+
+//    public static List<Book> findAll2(String path){
+//        ObjectInputStream in=null;
+//
+//        List<Book> books=null;
+//
+//        try {
+//            in=new ObjectInputStream(new FileInputStream(path));
+//
+//            books= (List<Book>) in.readObject();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }finally {
+//            if(null!=in){
+//                try {
+//                    in.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return books;
+//    }
+//
+//    public static void save2(List<Book> books,String path){
+//        ObjectOutputStream out=null;
+//
+//        try {
+//            out=new ObjectOutputStream(new FileOutputStream(path));
+//            out.writeObject(books);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            if(null!=out){
+//                try {
+//                    out.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
+//
+//    public static List<Book> findAll3(String path){
+//        ObjectInputStream in=null;
+//
+//        List<Book> books=null;
+//
+//        try {
+//            in=new ObjectInputStream(new FileInputStream(path));
+//            books= (List<Book>) in.readObject();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }finally {
+//            if(null!=in) {
+//                try {
+//                    in.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return books;
+//    }
+//
+//    public static void save3(List<Book> books,String path){
+//        ObjectOutputStream out=null;
+//
+//        try {
+//            out=new ObjectOutputStream(new FileOutputStream(path));
+//            out.writeObject(books);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }finally {
+//            if(null!=out){
+//                try {
+//                    out.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 }
