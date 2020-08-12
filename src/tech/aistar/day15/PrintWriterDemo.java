@@ -175,7 +175,7 @@ public class PrintWriterDemo {
         //true ->追加写入
         //true ->自动刷新缓存
         //没有使用语法糖的时候,有的windows是写不进去的
-        PrintWriter out=null;
+        PrintWriter out2=null;
         try {
             out=new PrintWriter(new FileWriter(path),true);
 
@@ -259,7 +259,7 @@ public class PrintWriterDemo {
         //true ->追加写入
         //true ->自动刷新缓存
         //没有使用语法糖的时候,有的windows是写不进去的
-        PrintWriter out=null;
+        PrintWriter out3=null;
         try {
             out=new PrintWriter(new FileWriter(path),true);
 
