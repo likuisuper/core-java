@@ -30,7 +30,9 @@ public class VolatileDemo {
     //读
     private void readX(){
         while(x!=5){
-
+            //输出语句执行完毕之后,底层会涉及到锁资源释放的操作
+            //读线程就会强制从主存中重新获取x
+            System.out.println();//当x没有加volatile时,执行这句后就会跳出循环
         }
 
         if(x==5){

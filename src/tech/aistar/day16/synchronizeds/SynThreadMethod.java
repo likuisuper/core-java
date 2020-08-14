@@ -44,9 +44,9 @@ public class SynThreadMethod extends Thread{
 
     @Override
     public void run() {
-        //add();
+        add();
 
-        add2();
+        //add2();
     }
 
     public static void main(String[] args) {
