@@ -53,8 +53,13 @@ class TestThreadDemo01{
         //请问程序启动线程调用的是start
 
         //注意:并不是先调用哪个线程的start方法,就一定会先启动哪个线程
-        t1.start();
 
+        //当两个线程都调用了run方法而不是start的时候,这时候就是mian线程中调用，不会启动新的线程，结果就是main线程的输出
+//        t1.run();
+//
+//        t2.run();
+
+        t1.start();
         t2.start();
 
         //处于main线程里面

@@ -10,7 +10,7 @@ import java.io.File;
  */
 public class DelFolder {
     public static void main(String[] args) {
-        delFolder("E:\\QQGame");
+        delFolder("C:\\Program Files (x86)\\aaa");
     }
 
     public static void delFolder(String path){
