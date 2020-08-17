@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
- * 本类功能:
+ * 本类功能:字母排序
  *
  * 键盘输入字母abcdeafdfdwddf
  * 然后统计每个字母的个数
@@ -24,73 +24,36 @@ public class AlphabetSort {
     }
 
     public static void sort(String str){
-//        // 定义一个HashMap集合
-//        Map<Character, Integer> map = new HashMap<>();
-//
-//        // 把字符串转换为字符数组
-//        char[] chs = str.toCharArray();
-//
-//        // 遍历字符数组，得到每一个字符
-//        for (char ch : chs) {
-//            // 拿刚才得到的字符作为键去集合中找，看返回值
-//            Integer i = map.get(ch);
-//
-//            // 是null：说明该键不存在，就把该字符作为键，1作为值存储
-//            if (i == null) {
-//                map.put(ch, 1);
-//            } else {
-//                // 不是null：说明该键存在，就把值加1，然后重新存储该键和值
-//                ++i;
-//                map.put(ch, i);
-//            }
-//        }
-//
-//        map.forEach((k,v)->{
-//            System.out.println(k+":"+v);
-//        });
-
-
-        Map<Character,Integer> map=new HashMap<>();
-
-        //将字符串转换为字符数组
+        //1.创建一个Map集合,key=字符串,value=字符串的个数
+        Map<Character,Integer> maps=new HashMap<>();
+        //2.将字符串转换为字符数组
         char[] chars=str.toCharArray();
-
         //遍历字符数组
         for (char ch : chars) {
-            Integer i=map.get(ch);//拿刚刚遍历得到的字符去map中找,看返回值
-            if(i==null){
-                //如果第一次出现,将该字符作为key,value就是出现次数,置为1
-                map.put(ch,1);
-            }else {//如果不是第一次出现
-                ++i;
-                map.put(ch,i);//更新字符对应的出现次数
+            //判断maps集合中是否包含ch
+            if(maps.containsKey(ch)){
+                //如果已经包含，将字符以及它对应的次数加1放入put
+                maps.put(ch,maps.get(ch)+1);
+            }else{
+                maps.put(ch,1);//ch第一次出现在maps中
             }
         }
+        //4.排序规则 - 根据次数升序排，然后一样的时候，继续根据字母降序排
+        //直接使用Entry对象
 
-//        map.forEach(new BiConsumer<Character, Integer>() {
-//            @Override
-//            public void accept(Character character, Integer integer) {
-//                System.out.println(character+":"+integer);
-//            }
-//        });
+        List<Map.Entry<Character,Integer>> list=new ArrayList<>(maps.entrySet());
 
-//        map.forEach((k,v)->{
-//            System.out.println(k+":"+v);
-//        });
-
-        Set<Map.Entry<Character,Integer>> set=map.entrySet();
-        List<Map.Entry<Character,Integer>> list=new ArrayList<>(set);
-        list.sort(new Comparator<Map.Entry<Character, Integer>>() {
-            @Override
-            public int compare(Map.Entry<Character, Integer> o1, Map.Entry<Character, Integer> o2) {
-                if(o1.getValue().equals(o2.getValue())){
-                    return o2.getKey().compareTo(o1.getKey());
-                }
-                return o1.getValue()-o2.getValue();
+        list.sort((e1,e2)->{
+            if(e1.getValue()>e2.getValue())
+                return 1;
+            else if(e1.getValue()==e2.getValue()){
+                return e2.getKey().compareTo(e1.getKey());
             }
+            return -1;
         });
 
-        System.out.println(list);
+        list.forEach(e-> System.out.println(e));
+
     }
 
 }

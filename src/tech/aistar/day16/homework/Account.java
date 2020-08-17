@@ -9,9 +9,7 @@ package tech.aistar.day16.homework;
 public class Account {
     private int id;
 
-    private String name;
-
-    private double balance;
+    private double balance=100;
 
     public int getId() {
         return id;
@@ -19,14 +17,6 @@ public class Account {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public double getBalance() {
@@ -40,14 +30,21 @@ public class Account {
     public Account() {
     }
 
+    public Account(int id, double balance) {
+        this.id = id;
+        this.balance = balance;
+    }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
         sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
         sb.append(", balance=").append(balance);
         sb.append('}');
         return sb.toString();
+    }
+
+    public void withdraw(double money){
+        this.balance-=money;
     }
 }

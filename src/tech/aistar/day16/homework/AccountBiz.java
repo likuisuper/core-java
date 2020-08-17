@@ -14,14 +14,44 @@ package tech.aistar.day16.homework;
  */
 public class AccountBiz implements Runnable{
 
-    public synchronized static double getMoney(){
-        Account account=new Account();
-        System.out.println(Thread.currentThread().getName()+":"+account.getBalance());
-        return 0.0d;
-    }
+    private Account account=new Account();
 
     @Override
     public void run() {
-        getMoney();
+        for (int i = 10; i >1 ; i--) {
+            test(10);
+        }
+    }
+
+    public void test(double money){
+        synchronized (account){//对象锁
+            if(account.getBalance()>0){
+                System.out.println(Thread.currentThread().getName()+"->正在取钱");
+
+                //调用取钱的方法
+                account.withdraw(money);
+//                try {
+//                    Thread.sleep(10);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+
+                System.out.println(Thread.currentThread().getName()+"->余额还剩:"+account.getBalance());
+
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Runnable r=new AccountBiz();
+
+        Thread t1=new Thread(r);
+        Thread t2=new Thread(r);
+
+        t1.setName("婆娘");
+        t2.setName("官人");
+
+        t1.start();
+        t2.start();
     }
 }

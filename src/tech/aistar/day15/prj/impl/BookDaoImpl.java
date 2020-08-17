@@ -29,9 +29,13 @@ public class BookDaoImpl implements IBookDao {
         try(ObjectInputStream in=new ObjectInputStream(new FileInputStream(PATH))) {
             books= (List<Book>) in.readObject();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            //让books为空，不然保存的时候会报FileNotFoundException异常
+            books=null;
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            //让books为空，就算文件里是非法的也处理了
+            books=null;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -40,7 +44,22 @@ public class BookDaoImpl implements IBookDao {
 
     @Override
     public void delById(int id) {
+        List<Book> oldList=findAll();
+        if(null!=oldList&&oldList.size()>0){
+            oldList.removeIf((b)->{
+                return id==b.getId();
+            });
 
+            //再次写入,不然调用删除方法后，里面的内容还是原来保存的集合
+
+            try(ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(PATH))) {
+                out.writeObject(oldList);//将删除后的oldList写入到指定路径中
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -56,10 +75,11 @@ public class BookDaoImpl implements IBookDao {
             //将oldList中的所有的数据全部转移到newList集合中去
             newList.addAll(oldList);
         }
+        //还要加上要保存的对象
         newList.add(b);
 
         try(ObjectOutputStream out=new ObjectOutputStream(new FileOutputStream(PATH))) {
-            out.writeObject(newList);
+            out.writeObject(newList);//将newList写到到指定的路径中
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
