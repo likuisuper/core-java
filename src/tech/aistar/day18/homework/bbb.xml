@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<students>
+    <student id="1">
+        <name>sbcc</name>
+        <no>2</no>
+        <publish_date>1970-01-01</publish_date>
+        <Adress>
+            <province>江苏</province>
+            <city>苏州</city>
+        </Adress>
+    </student>
+    <student id="1">
+        <name>sbcc</name>
+        <no>2</no>
+        <publish_date>1970-01-01</publish_date>
+    </student>
+</students>

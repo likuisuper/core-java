@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--<!DOCTYPE students SYSTEM 'student.dtd'>-->
+
+<students>
+
+
+    <student id="101">
+
+        <name>lk</name>
+
+        <no>60</no>
+
+        <birthday>1998-10-19</birthday>
+
+
+        <adress>
+
+            <province>江苏</province>
+
+            <city>苏州</city>
+
+        </adress>
+
+    </student>
+
+
+    <student id="102">
+
+        <name>sbczw</name>
+
+        <no>61</no>
+
+        <birthday>1998-09-12</birthday>
+
+
+        <adress>
+
+            <province>M78</province>
+
+            <city>狮子座</city>
+
+        </adress>
+
+    </student>
+
+</students>

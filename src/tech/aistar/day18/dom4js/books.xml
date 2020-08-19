@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<books>
+    <book id="1001">
+        <name>西游记</name>
+        <author>吴承恩</author>
+        <price>100.0</price>
+        <bookinfo>
+            <publish_house>人民出版社</publish_house>
+            <publish_date>1988-08-09</publish_date>
+            <pages>100</pages>
+            <description>这是一本好书</description>
+        </bookinfo>
+    </book>
+    <book id="1002">
+        <name>水浒传</name>
+        <author>施耐庵</author>
+        <price>200</price>
+        <bookinfo>
+            <publish_house>机械出版社</publish_house>
+            <publish_date>1989-08-09</publish_date>
+            <pages>100</pages>
+            <description>这是一本禁书</description>
+        </bookinfo>
+    </book>
+</books>

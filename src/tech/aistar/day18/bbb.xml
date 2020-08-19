@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<books>
+	<book id="1">
+		<name>java</name>
+		<author>james</author>
+		<price>100.0</price>
+		<bookinfo>
+			<publish_house>驰星出版社</publish_house>
+			<publish_date>2020-08-19</publish_date>
+			<pages>100</pages>
+			<description>好书</description>
+		</bookinfo>
+	</book>
+	<book id="1">
+		<name>java</name>
+		<author>james</author>
+		<price>100.0</price>
+	</book>
+</books>
