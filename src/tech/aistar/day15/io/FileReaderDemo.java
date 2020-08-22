@@ -29,5 +29,22 @@ public class FileReaderDemo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        try(BufferedReader in=new BufferedReader(new FileReader(PATH))) {
+//            //字符流以字符为单位
+//            String line=null;
+//            while(true){
+//                line=in.readLine();
+//                if(null==line)
+//                    break;
+//            }
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
     }
+
+
 }

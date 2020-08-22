@@ -34,5 +34,14 @@ public class InputStreamReaderDemo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
+//        System.out.println("请你输入");
+//        try {
+//            String line=in.readLine();
+//            System.out.println(line);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }
