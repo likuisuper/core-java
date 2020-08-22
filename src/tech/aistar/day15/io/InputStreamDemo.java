@@ -1,5 +1,7 @@
 package tech.aistar.day15.io;
 
+import org.dom4j.io.OutputFormat;
+
 import java.io.*;
 
 /**
@@ -70,85 +72,26 @@ public class InputStreamDemo {
         }
     }
 
-//    public static void copy2(String src,String target){
-//        InputStream in=null;
-//
-//        OutputStream out=null;
-//
-//        try {
-//            in=new FileInputStream(src);
-//
-//            out=new FileOutputStream(target);
-//
-//            int len=-1;
-//
-//            while(true){
-//                len=in.read();
-//                if(len==-1)
-//                    break;
-//                //System.out.print((char)len);
-//                out.write(len);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            if(null!=in){
-//                try {
-//                    in.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if(null!=out){
-//                try {
-//                    out.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-//
-//    publci static void copy3(String src,String target){
-//        InputStream in=null;
-//
-//        OutputStream out=null;
-//
-//        try {
-//            in=new FileInputStream(src);
-//
-//            out=new FileOutputStream(target);
-//
-//            int len=-1;
-//            while(true){
-//                len=in.read();
-//                if(len==-1)
-//                    break;
-//                System.out.print((char)len);
-//                out.write(len);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            if(null!=in){
-//                try {
-//                    in.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if(null!=out){
-//                try {
-//                    out.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//    }
+    public static void copy1(String src,String target){
+        InputStream in=null;
+        OutputStream out=null;
+
+        try {
+            in=new FileInputStream(src);
+            out=new FileOutputStream(target);
+
+            int len=-1;
+            while (true){
+                len=in.read();
+                if(len==-1)
+                    break;
+                out.write(len);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
