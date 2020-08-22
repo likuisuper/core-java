@@ -72,19 +72,15 @@ public class InputStreamDemo {
         }
     }
 
-    public static void copy1(String src,String target){
-        InputStream in=null;
-        OutputStream out=null;
-
-        try {
-            in=new FileInputStream(src);
-            out=new FileOutputStream(target);
-
+    public static void copy2(String src,String target){
+        try(InputStream in=new FileInputStream(src);
+        OutputStream out=new FileOutputStream(target)) {
             int len=-1;
             while (true){
                 len=in.read();
-                if(len==-1)
+                if(len==-1){
                     break;
+                }
                 out.write(len);
             }
         } catch (FileNotFoundException e) {

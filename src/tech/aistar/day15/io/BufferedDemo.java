@@ -52,30 +52,11 @@ public class BufferedDemo {
         }
     }
 
-//    public static voie copy2(String src,String target){
+//    public static void copy2(String src,String target){
 //        try(BufferedInputStream in=new BufferedInputStream(new FileInputStream(src));
-//        BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(target))) {
-//
+//        BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(target))){
 //            int len=-1;
-//            while(true){
-//                len=in.read();
-//                if(len==-1)
-//                    break;
-//                out.write(len);
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static void copy3(String src,String target){
-//        try(BufferedInputStream in=new BufferedInputStream(new FileInputStream(src));
-//        BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(target))) {
-//
-//            int len=-1;
-//            while(true){
+//            while (true){
 //                len=in.read();
 //                if(len==-1)
 //                    break;
