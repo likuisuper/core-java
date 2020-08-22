@@ -52,7 +52,6 @@ public class BufferedArrayDemo {
 //    public static void copy2(String src,String target){
 //        try(BufferedInputStream in=new BufferedInputStream(new FileInputStream(src));
 //        BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(target))) {
-//
 //            int len=-1;
 //            byte[] buf=new byte[8*1024];
 //            while(true){
@@ -71,11 +70,10 @@ public class BufferedArrayDemo {
 //    public static void copy3(String src,String target){
 //        try(BufferedInputStream in=new BufferedInputStream(new FileInputStream(src));
 //        BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(target))) {
-//
 //            int len=-1;
 //            byte[] buf=new byte[8*1024];
 //            while(true){
-//                len=in.read(buf);
+//                len=in.read();
 //                if(len==-1)
 //                    break;
 //                out.write(buf,0,len);
