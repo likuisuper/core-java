@@ -1,6 +1,7 @@
 package tech.aistar.day15.io;
 
 import java.io.*;
+import java.lang.annotation.Target;
 
 /**
  * 本类功能:使用字符流来完成拷贝 - 只能操作字符文件
